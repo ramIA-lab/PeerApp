@@ -24,6 +24,13 @@ def check_if_already_submitted(dropbox_token, dropbox_path, identificador):
         st.error(f"Error al comprobar archivos en Dropbox: {e}")
     return False
 
+def mostrar_logos():
+    col1, _, col3 = st.columns([5, 2, 1])
+    with col1:
+        st.image("https://www.upc.edu/comunicacio/ca/identitat/descarrega-arxius-grafics/fitxers-marca-principal/upc-positiu-p3005.png", width=150)
+    with col3:
+        st.image("https://ideai.upc.edu/ca/shared/ideai_logo.png", width=80)
+
 def main():
     st.set_page_config(page_title="Evaluación de Proyecto", layout="centered")
 
@@ -42,6 +49,7 @@ def main():
 
     # Autenticación
     if not st.session_state.authenticated:
+        mostrar_logos()
         with st.form("auth_form"):
             st.markdown("### 🔒 Acceso a la encuesta")
             username_input = st.text_input("Usuario")
@@ -57,11 +65,13 @@ def main():
         st.stop()
 
     # LOGOS y TÍTULO (solo si ya estás autenticado)
-    col1, _, col3 = st.columns([5, 2, 1])
-    with col1:
-        st.image("https://www.upc.edu/comunicacio/ca/identitat/descarrega-arxius-grafics/fitxers-marca-principal/upc-positiu-p3005.png", width=150)
-    with col3:
-        st.image("https://ideai.upc.edu/ca/shared/ideai_logo.png", width=80)
+    # col1, _, col3 = st.columns([5, 2, 1])
+    # with col1:
+    #    st.image("https://www.upc.edu/comunicacio/ca/identitat/descarrega-arxius-grafics/fitxers-marca-principal/upc-positiu-p3005.png", width=150)
+    # with col3:
+    #    st.image("https://ideai.upc.edu/ca/shared/ideai_logo.png", width=80)
+
+    mostrar_logos()
 
     st.markdown("<h2 style='text-align: center;'>Evaluación de Integrantes del Proyecto</h2>", unsafe_allow_html=True)
 
