@@ -82,7 +82,7 @@ def main():
 
     try:
         file_stream = download_from_dropbox(dropbox_token, notas_path)
-        df = pd.read_excel(file_stream, usecols=["DNI", "NOMBRE", "PROYECTO"])
+        df = pd.read_excel(file_stream, usecols=["IDENTIFICADOR", "NOMBRE", "PROYECTO"])
     except Exception as e:
         st.error(f"Error al descargar el archivo de Dropbox: {e}")
         return
@@ -100,7 +100,7 @@ def main():
 
     if identificador_input and grupo_input:
         grupo_df = df[df["PROYECTO"] == grupo_input]
-        dnis_del_grupo = grupo_df["DNI"].astype(str).str.strip().tolist()
+        dnis_del_grupo = grupo_df["IDENTIFICADOR"].astype(str).str.strip().tolist()
         identificador_normalizado = str(identificador_input).strip()
 
         if identificador_normalizado not in dnis_del_grupo:
@@ -116,7 +116,7 @@ def main():
                 nota = st.number_input(f"{row['NOMBRE']}", min_value=0.00, max_value=10.00, value=5.00, step=0.01)
                 evaluaciones.append({
                     "Evaluador": identificador_normalizado,
-                    "Evaluado": row['DNI'],
+                    "Evaluado": row['IDENTIFICADOR'],
                     "Nombre": row['NOMBRE'],
                     "Proyecto": grupo_input,
                     "Nota": nota
