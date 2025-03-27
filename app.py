@@ -57,11 +57,19 @@ def main():
             login = st.form_submit_button("Iniciar sesión")
 
             if login:
-                if username_input == st.secrets["auth"]["username"] and password_input == st.secrets["auth"]["password"]:
-                    st.session_state.authenticated = True
+                usuarios_validos = st.secrets["auth_users"]
+                if username_input in usuarios_validos and password_input == usuarios_validos[username_input]:
+                    st.session_state["authenticated"] = True
+                    st.session_state["username"] = username_input
                 else:
                     st.error("❌ No tienes autorización para acceder a la encuesta.")
                     st.stop()
+
+                # if username_input == st.secrets["auth"]["username"] and password_input == st.secrets["auth"]["password"]:
+                #     st.session_state.authenticated = True
+                # else:
+                #    st.error("❌ No tienes autorización para acceder a la encuesta.")
+                #    st.stop()
         st.stop()
 
     # LOGOS y TÍTULO (solo si ya estás autenticado)
@@ -72,6 +80,9 @@ def main():
     #    st.image("https://ideai.upc.edu/ca/shared/ideai_logo.png", width=80)
 
     mostrar_logos()
+
+    if st.session_state.get("authenticated", False):
+        st.markdown(f"👋 Bienvenido, **{st.session_state['username']}**")
 
     st.markdown("<h2 style='text-align: center;'>Evaluación de Integrantes del Proyecto</h2>", unsafe_allow_html=True)
 
@@ -87,7 +98,7 @@ def main():
         st.error(f"Error al descargar el archivo de Dropbox: {e}")
         return
 
-    identificador_input = st.text_input("Introduce tu Identificador:", max_chars=10)
+    identificador_input = st.text_input("Introduce tu IDENTIFICADOR:", max_chars=10)
     proyectos_unicos = df["PROYECTO"].unique().tolist()
 
     if identificador_input:
@@ -104,7 +115,7 @@ def main():
         identificador_normalizado = str(identificador_input).strip()
 
         if identificador_normalizado not in dnis_del_grupo:
-            st.error("❌ El identificador no pertenece al grupo de proyecto seleccionado.")
+            st.error("❌ El IDENTIFICADOR no pertenece al grupo de proyecto seleccionado.")
             return
 
         evaluaciones = []
